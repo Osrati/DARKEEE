@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SD Dark - Professional Web Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --accent-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --dark-bg: #0a0a0a;
+            --dark-secondary: #1a1a2e;
+            --dark-tertiary: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0c0;
+            --text-muted: #6b7280;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Enhanced animated background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(245, 87, 108, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 242, 254, 0.1) 0%, transparent 50%);
+            animation: morphBackground 20s ease-in-out infinite;
+            z-index: -2;
+        }
+
+        /* Floating particles */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.1), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(102, 126, 234, 0.2), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(245, 87, 108, 0.15), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(0, 242, 254, 0.1), transparent);
+            background-repeat: repeat;
+            background-size: 200px 150px;
+            animation: particleFloat 15s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes morphBackground {
+            0%, 100% {
+                background: 
+                    radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(245, 87, 108, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(0, 242, 254, 0.1) 0%, transparent 50%);
+            }
+            33% {
+                background: 
+                    radial-gradient(circle at 70% 30%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 30% 70%, rgba(245, 87, 108, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 60% 10%, rgba(0, 242, 254, 0.15) 0%, transparent 50%);
+            }
+            66% {
+                background: 
+                    radial-gradient(circle at 40% 20%, rgba(102, 126, 234, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 60% 80%, rgba(245, 87, 108, 0.2) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 60%, rgba(0, 242, 254, 0.12) 0%, transparent 50%);
+            }
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-200px); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Enhanced Header */
+        .header {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            background: 
+                linear-gradient(135deg, rgba(10, 10, 10, 0.8) 0%, rgba(26, 26, 46, 0.6) 100%);
+            backdrop-filter: blur(20px);
+        }
+
+        .header-content {
+            max-width: 800px;
+            animation: slideUpFade 1s ease-out;
+        }
+
+        .logo-container {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            border-radius: 25px;
+            filter: drop-shadow(0 0 30px rgba(102, 126, 234, 0.5));
+            transition: all 0.3s ease;
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 0 40px rgba(245, 87, 108, 0.7));
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes slideUpFade {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 800;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .tagline {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            margin-bottom: 3rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            line-height: 1.8;
+        }
+
+        /* Enhanced CTA Button */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 10px 30px rgba(102, 126, 234, 0.3),
+                0 0 0 0 rgba(102, 126, 234, 0.5);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 20px 40px rgba(102, 126, 234, 0.4),
+                0 0 0 8px rgba(102, 126, 234, 0.1);
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* Desktop Navigation */
+        .nav-desktop {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 0.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 0.8rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: none;
+            border-radius: 25px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: var(--primary-gradient);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+        }
+
+        /* Mobile Navigation */
+        .nav-mobile {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: none;
+            gap: 0.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-mobile .nav-item {
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 1.2rem;
+        }
+
+        .nav-mobile .nav-text {
+            display: none;
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle:hover {
+            background: var(--primary-gradient);
+            transform: scale(1.05);
+        }
+
+        /* Enhanced Sections */
+        .section {
+            padding: 8rem 2rem;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            margin-bottom: 4rem;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent-gradient);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .profile-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary-gradient);
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .profile-image:hover {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .profile-image:hover img {
+            transform: scale(1.1);
+        }
+
+        .about-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Enhanced Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .skill-card {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--primary-gradient);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .skill-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            display: block;
+            filter: grayscale(0.3);
+            transition: filter 0.3s ease;
+        }
+
+        .skill-card:hover .skill-icon {
+            filter: grayscale(0);
+        }
+
+        .skill-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .skill-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Enhanced Portfolio Grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .portfolio-item {
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            height: 350px;
+            transition: all 0.4s ease;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 70%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(10, 10, 35, 0.95), transparent);
+            backdrop-filter: blur(10px);
+        }
+
+        .portfolio-item:hover .portfolio-image {
+            transform: scale(1.1);
+        }
+
+        .portfolio-title {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .portfolio-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        /* Contact Section */
+        .contact-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-text {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px) scale(1.1);
+            background: var(--primary-gradient);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--glass-border);
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+        }
+
+        .footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-desktop {
+                display: none;
+            }
+            
+            .nav-mobile {
+                display: flex;
+            }
+            
+            .menu-toggle {
+                display: flex;
+            }
+            
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .section {
+                padding: 4rem 1rem;
+            }
+            
+            .skills-grid,
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-links {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            .logo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .header {
+                padding-top: 5rem;
+            }
+        }
+
+        /* Scroll animations */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Desktop Navigation -->
+    <nav class="nav-desktop">
+        <a href="#about" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-text">About</span>
+        </a>
+        <a href="#skills" class="nav-item">
+            <span class="nav-icon">🛠️</span>
+            <span class="nav-text">Skills</span>
+        </a>
+        <a href="#portfolio" class="nav-item">
+            <span class="nav-icon">💼</span>
+            <span class="nav-text">Portfolio</span>
+        </a>
+        <a href="#contact" class="nav-item">
+            <span class="nav-icon">📧</span>
+            <span class="nav-text">Contact</span>
+        </a>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <nav class="nav-mobile">
+        <a href="#about" class="nav-item">
+            <span class="nav-icon">👤</span>
+            <span class="nav-text">About</span>
+        </a>
+        <a href="#skills" class="nav-item">
+            <span class="nav-icon">🛠️</span>
+            <span class="nav-text">Skills</span>
+        </a>
+        <a href="#portfolio" class="nav-item">
+            <span class="nav-icon">💼</span>
+            <span class="nav-text">Portfolio</span>
+        </a>
+        <a href="#contact" class="nav-item">
+            <span class="nav-icon">📧</span>
+            <span class="nav-text">Contact</span>
+        </a>
+    </nav>
+
+    <!-- Mobile Menu Toggle -->
+    <div class="menu-toggle">☰</div>
+
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img class="logo" src="Untitled design (3).png" alt="SD Dark Logo" onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block';">
+                    <!-- Fallback SVG logo if image fails to load -->
+                    <svg class="logo logo-fallback" style="display: none;" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#667eea"/>
+                                <stop offset="50%" stop-color="#764ba2"/>
+                                <stop offset="100%" stop-color="#f093fb"/>
+                            </linearGradient>
+                            <filter id="glow">
+                                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                <feMerge> 
+                                    <feMergeNode in="coloredBlur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+                        <rect x="20" y="20" width="160" height="160" rx="25" fill="url(#logoGradient)" filter="url(#glow)"/>
+                        <text x="100" y="115" font-family="Inter, Arial, sans-serif" font-size="65" font-weight="900" fill="white" text-anchor="middle">SD</text>
+                        <text x="100" y="145" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="600" fill="rgba(255,255,255,0.8)" text-anchor="middle">DARK</text>
+                    </svg>
+                </div>
+                <h1 class="hero-title">SD Dark</h1>
+                <p class="hero-subtitle">Professional Web Developer</p>
+                <p class="tagline">Crafting exceptional digital experiences with cutting-edge technology, innovative design, and performance-driven solutions</p>
+                <a href="#contact" class="cta-button">
+                    <span>Let's Work Together</span>
+                    <span>✨</span>
+                </a>
+            </div>
+        </header>
+
+        <section id="about" class="section scroll-reveal">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="profile-image">
+                    <img src="Untitled design (4).png" alt="SD Dark - Professional Web Developer" onerror="this.src='https://placehold.co/500x600/1a1a2e/667eea?text=SD+Dark+Developer'">
+                </div>
+                <div class="about-text">
+                    <p>Hello! I'm SD Dark, a passionate full-stack developer with a keen eye for creating exceptional digital experiences. My journey in web development spans several years, during which I've mastered the art of transforming complex ideas into elegant, user-friendly solutions.</p>
+                    <p>I specialize in modern web technologies including React, Node.js, and cutting-edge design frameworks. My approach combines technical excellence with creative problem-solving, ensuring every project delivers both functionality and visual appeal.</p>
+                    <p>When I'm not coding, you'll find me exploring emerging technologies, contributing to open-source projects, and mentoring aspiring developers in the community.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section scroll-reveal">
+            <h2 class="section-title">Expertise</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">⚛️</div>
+                    <h3 class="skill-title">Frontend Development</h3>
+                    <p class="skill-description">Crafting responsive, interactive user interfaces with React, Vue.js, and modern CSS frameworks. Expertise in performance optimization and accessibility.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🎨</div>
+                    <h3 class="skill-title">UI/UX Design</h3>
+                    <p class="skill-description">Creating intuitive user experiences with a focus on usability, accessibility, and modern design principles. Proficient in Figma and Adobe Creative Suite.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">⚙️</div>
+                    <h3 class="skill-title">Backend Development</h3>
+                    <p class="skill-description">Building scalable server-side applications with Node.js, Python, and cloud technologies. Database design and API development expertise.</p>
+                </div>
+                <div class="skill-card">
+                    <div class="skill-icon">📱</div>
+                    <h3 class="skill-title">Mobile Development</h3>
+                    <p class="skill-description">Developing cross-platform mobile applications using React Native and Progressive Web App technologies for seamless mobile experiences.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio" class="section scroll-reveal">
+            <h2 class="section-title">Featured Projects</h2>
+            <div class="portfolio-grid">
+                <div class="portfolio-item">
+                    <img src="https://placehold.co/600x400/667eea/ffffff?text=E-Commerce+Platform" alt="Modern E-Commerce Platform" class="portfolio-image">
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">E-Commerce Platform</h3>
+                        <p class="portfolio-description">A full-featured online shopping platform with advanced payment integration, real-time inventory management, and AI-powered recommendations.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://placehold.co/600x400/f093fb/ffffff?text=Analytics+Dashboard" alt="Analytics Dashboard" class="portfolio-image">
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Analytics Dashboard</h3>
+                        <p class="portfolio-description">Real-time business intelligence dashboard with interactive data visualizations, custom reporting, and predictive analytics capabilities.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item">
+                    <img src="https://placehold.co/600x400/4facfe/ffffff?text=Social+Platform" alt="Social Media Platform" class="portfolio-image">
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Social Platform</h3>
+                        <p class="portfolio-description">A modern social networking application with real-time messaging, content sharing, and advanced privacy controls built with React and WebSocket technology.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section scroll-reveal">
+            <h2 class="section-title">Let's Connect</h2>
+            <div class="contact-content">
+                <p class="contact-text">Ready to bring your vision to life? I'm always excited to work on new projects and collaborate with forward-thinking individuals and teams. Let's create something amazing together.</p>
+                <a href="mailto:sddark@example.com" class="cta-button">
+                    <span>Start a Conversation</span>
+                    <span>💬</span>
+                </a>
+                <div class="social-links">
+                    <a href="#" class="social-link" title="Twitter">🐦</a>
+                    <a href="#" class="social-link" title="LinkedIn">💼</a>
+                    <a href="#" class="social-link" title="GitHub">🐙</a>
+                    <a href="#" class="social-link" title="Instagram">📸</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>&copy; 2024 SD Dark. All rights reserved.</p>
+            <p>Designed and Developed with ❤️ and Innovation</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Update active navigation item
+                    document.querySelectorAll('.nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const mobileNav = document.querySelector('.nav-mobile');
+        let isMenuOpen = false;
+
+        menuToggle.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                mobileNav.style.display = 'flex';
+                mobileNav.style.opacity = '0';
+                mobileNav.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => {
+                    mobileNav.style.opacity = '1';
+                    mobileNav.style.transform = 'translateX(-50%) translateY(0)';
+                }, 10);
+                menuToggle.innerHTML = '✕';
+            } else {
+                mobileNav.style.opacity = '0';
+                mobileNav.style.transform = 'translateX(-50%) translateY(20px)';
+                setTimeout(() => {
+                    mobileNav.style.display = 'none';
+                }, 300);
+                menuToggle.innerHTML = '☰';
+            }
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-mobile .nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    isMenuOpen = false;
+                    mobileNav.style.opacity = '0';
+                    mobileNav.style.transform = 'translateX(-50%) translateY(20px)';
+                    setTimeout(() => {
+                        mobileNav.style.display = 'none';
+                    }, 300);
+                    menuToggle.innerHTML = '☰';
+                }
+            });
+        });
+
+        // Update active navigation item on scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === `#${current}`) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // Scroll reveal animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Dynamic text animation for hero section
+        const heroTitle = document.querySelector('.hero-title');
+        if (heroTitle) {
+            heroTitle.style.backgroundSize = '200% 200%';
+            heroTitle.style.animation = 'gradientShift 3s ease infinite';
+        }
+
+        // Add gradient animation keyframes dynamically
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes gradientShift {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Enhanced cursor trail effect
+        let mouseX = 0, mouseY = 0;
+        let trailX = 0, trailY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateTrail() {
+            const diffX = mouseX - trailX;
+            const diffY = mouseY - trailY;
+            
+            trailX += diffX * 0.1;
+            trailY += diffY * 0.1;
+            
+            requestAnimationFrame(animateTrail);
+        }
+        
+        animateTrail();
+    </script>
+</body>
+</html>
